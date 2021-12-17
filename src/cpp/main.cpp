@@ -11,9 +11,9 @@ using std::string;
 #define Any GLFW_DONT_CARE
 
 #define Win_Width 800
-#define Win_Min_Width 200
+#define Win_Min_Width 167
 #define Win_Height 600
-#define Win_Min_Height 200
+#define Win_Min_Height 100
 
 
 int main() {
