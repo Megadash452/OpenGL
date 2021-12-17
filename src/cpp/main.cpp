@@ -49,7 +49,7 @@ int main() {
     // set minimum size to 200x200. max size is any
     glfwSetWindowSizeLimits(window, Win_Min_Width, Win_Min_Height, Any, Any);
     // the space OpenGL will work with relative to the window
-    // glViewport(0, 0, Win_Width, Win_Height);
+    glViewport(0, 0, Win_Width, Win_Height);
     // register events
     glfwSetFramebufferSizeCallback(window, onWindowResize);
 
