@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "event-handlers.h"
+// glad must always be included before glfw
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 using std::string;

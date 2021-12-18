@@ -4,7 +4,7 @@ project(OpenGL)
 set(CMAKE_CXX_STANDARD 23)
 
 file(GLOB SRC src/cpp/*.cpp)
-add_executable(OpenGL external/glad.c ${SRC})
+add_executable(OpenGL external/glad.c ${SRC} src/cpp/examples.cpp src/headers/examples.h)
 
 # get include/header files
 include_directories(src/headers)
