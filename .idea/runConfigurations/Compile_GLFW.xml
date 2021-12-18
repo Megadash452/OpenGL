@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Compile GLFW" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="powershell.exe -noe -c &quot;&amp;{$vsPath = '%ProgramFiles(x86)%/Microsoft Visual Studio/Installer/vswhere.exe' -property installationpath; Import-Module (Join-Path $vsPath 'Common7/Tools/Microsoft.VisualStudio.DevShell.dll'); Enter-VsDevShell -VsInstallPath $vsPath -SkipAutomaticLocation}&quot;" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
+    <option name="SCRIPT_PATH" value="$PROJECT_DIR$/.idea/runConfigurations/compileGLFW.bat" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="EXECUTE_IN_TERMINAL" value="true" />
+    <option name="EXECUTE_SCRIPT_FILE" value="true" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

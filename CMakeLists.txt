@@ -9,6 +9,7 @@ add_executable(OpenGL external/glad.c ${SRC} src/cpp/examples.cpp src/headers/ex
 # get include/header files
 include_directories(src/headers)
 include_directories(external/include)
+include_directories(external/GLFW/include)
 
 # get lib files
 file(GLOB LIB external/lib/*.lib)

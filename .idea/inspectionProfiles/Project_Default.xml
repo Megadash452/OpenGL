@@ -8,5 +8,8 @@
     <inspection_tool class="OCUnusedStruct" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="OCUnusedTemplateParameter" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="OCUnusedTypeAlias" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="UnusedLocalVariable" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="UnusedParameter" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="UnusedValue" enabled="true" level="INFORMATION" enabled_by_default="true" />
   </profile>
 </component>
