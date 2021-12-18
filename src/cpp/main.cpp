@@ -10,6 +10,7 @@ using std::string;
 #define True GL_TRUE
 #define False GL_FALSE
 #define Any GLFW_DONT_CARE
+#define Float GL_FLOAT
 
 #define Win_Width 800
 #define Win_Min_Width 167
@@ -108,7 +109,7 @@ struct ShaderProgram
 
 
 int main() {
-
+    std::cout << "init\n";
 
     // initialize GLFW
     glfwInit();
@@ -151,24 +152,31 @@ int main() {
     // --- DRAWING TRIANGLE ---
     //! @brief defined points of a triangle to be drawn
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f,  -0.5f, 0.0f,
-        0.0f,  0.5f,  0.0f
+        -0.5f, -0.5f, 0.0f, // no defined color
+        0.5f,  -0.5f, 0.0f, // no defined color
+        0.0f,  0.5f,  0.0f  // no defined color
     };
     //! @brief A pointer to some data in the GPU. Contains an array of vertices.
     unsigned int vertex_buffer;
     glGenBuffers(1, &vertex_buffer);
-    {
-        // (can bind multiple buffers as long as they are different types)
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-        /*! move the vertices data from RAM (CPU) to VRAM (GPU).
-         *  Do this the least amount of times possible (or do it in bulk) because it is slow
-         *  @param usage Options:
-         *                  GL_STREAM_DRAW:  is written once,  is read few times
-         *                  GL_STATIC_DRAW:  is written a lot, is read few times
-         *                  GL_DYNAMIC_DRAW: is written a lot, is read a lot     */
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    }
+
+    unsigned int vertex_array;
+    glGenVertexArrays(1, &vertex_array);
+    glBindVertexArray(vertex_array);
+    // (can bind multiple buffers as long as they are different types)
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    /*! move the vertices data from RAM (CPU) to VRAM (GPU).
+     *  Do this the least amount of times possible (or do it in bulk) because it is slow
+     *  @param usage Options:
+     *                  GL_STREAM_DRAW:  is written once,  is read few times
+     *                  GL_STATIC_DRAW:  is written a lot, is read few times
+     *                  GL_DYNAMIC_DRAW: is written a lot, is read a lot     */
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // create attribute object
+    // first param is layout location (matches with the vertex shader)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // use attribute object with current vertex array
+    glEnableVertexAttribArray(0);
 
 
     // render loop
@@ -179,8 +187,13 @@ int main() {
         });
 
         // clear: fill the color buffer with this color. Acts as a background color
-        glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.75f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(basic_SP.GL_program);
+        glBindVertexArray(vertex_array);
+        // render vertices
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // transition from one frame to another with no flickers
         glfwSwapBuffers(window);
