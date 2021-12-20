@@ -47,10 +47,8 @@ struct Shape2D
         if (!_indices)
         {
             // defaults to triangle
-            indices = (unsigned int *)alloca(3);
-            indices[0] = 0;
-            indices[1] = 1;
-            indices[2] = 2;
+            unsigned int a[] = { 1, 2, 3 };
+            indices = a;
         }
         else // if indices are passed in just use them
             indices = _indices;
