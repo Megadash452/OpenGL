@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <array>
+//#include <array>
+#include <exception>
 #include "shader-program.h"
 #include "event-handlers.h"
 #include "vec.h"
@@ -29,8 +30,14 @@ struct Shape2D
     void bind_array() const { glBindVertexArray(this->vertex_array); }
     void draw() const
     {
-        // use the Vertex Array that holds a specified object/shape we want to render
-        glBindVertexArray(vertex_array);
+        this->bind_array();
+
+        /*! @brief Render vertices
+         *  @param mode  type of primitive (shape) to render
+         *  @param first index of the vertex array where we want to take vertices from
+         *  @param count how many vertices to render */
+        // glDrawArrays(GL_TRIANGLES, 0, 3); // * USE FOR TRIANGLES
+
         /*! @brief Render from indices (not vertices)
          *  @param mode    type of primitive (shape) to render
          *  @param count   how many vertices to render
@@ -41,17 +48,26 @@ struct Shape2D
 
     #pragma clang diagnostic push
     #pragma ide diagnostic ignored "cppcoreguidelines-pro-type-member-init"
-    explicit Shape2D(float* _vertices, unsigned int* const _indices=nullptr)
+    explicit Shape2D(float* _vertices, unsigned int v_length, unsigned int* const _indices=nullptr, unsigned int i_length=0)
         : vertices(_vertices)
     {
+
         if (!_indices)
         {
-            // defaults to triangle
-            unsigned int a[] = { 1, 2, 3 };
-            indices = a;
+            // TODO: if shape has more than 3 sides this will draw weird. identify a pattern for indices and use it here
+            // make indices in order from least to greatest (aka draw default from first to last <1, 2, 3, ...>)
+            for (int i=0; i <= v_length; i++)
+                this->indices[i] = i;
         }
         else // if indices are passed in just use them
-            indices = _indices;
+        {
+            if (i_length == 0)
+                throw std::invalid_argument("Cannot use array of length 0 for indices."
+                                            "@param<l_length> has to be greater than 0");
+            /*! @brief specify the order that we want to draw vertices. Store *indices* to a vertex. Used by Element Buffer
+             *  OpenGL uses triangles, the indices will be in order of a triangle (to draw a rectangle, draw 2 triangles) */
+            this->indices = _indices;
+        }
 
         // allocate VRAM
         glGenVertexArrays( 1, &this->vertex_array   );
@@ -67,10 +83,11 @@ struct Shape2D
          *  Do this the least amount of times possible (or do it in bulk) because it is slow
          *  @param usage Options:
          *                  GL_STREAM_DRAW:  is written once,  is read few times
-         *                  GL_STATIC_DRAW:  is written a lot, is read few times
+         *                  GL_STATIC_DRAW:  is written once,  is read a lot
          *                  GL_DYNAMIC_DRAW: is written a lot, is read a lot     */
-        glBufferData(GL_ARRAY_BUFFER,         sizeof(this->vertices), this->vertices, GL_STATIC_DRAW);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices),  this->indices,  GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (unsigned int)sizeof(float) * v_length, this->vertices, GL_STATIC_DRAW);
+        // We don't change the indices so safe to keep static
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (unsigned int)sizeof(this->indices) * i_length, this->indices,  GL_STATIC_DRAW);
         /*! @brief Create attribute object, attributes to be given to the vertex shader
          *  @param position   layout location (matches with the vertex shader)
          *  @param size       how many values the vertex attribute stores (vec3)
@@ -85,13 +102,13 @@ struct Shape2D
     }
 
     // TODO:
-    template <size_t v_size, size_t i_size>
-    explicit Shape2D(std::array<float, v_size> _vertices, std::array<unsigned int, i_size> _indices=nullptr)
-        :Shape2D((float*)_vertices, (unsigned int*)_indices) {  }
-
-    template <size_t v_size>
-    explicit Shape2D(std::array<float, v_size> _vertices, unsigned int* _indices=nullptr) // NOLINT(readability-non-const-parameter)
-        :Shape2D((float*)_vertices, _indices) {  }
+    //template <size_t v_size, size_t i_size>
+    //explicit Shape2D(std::array<float, v_size> _vertices, std::array<unsigned int, i_size> _indices=nullptr)
+    //    :Shape2D((float*)_vertices, (unsigned int*)_indices) {  }
+    //
+    //template <size_t v_size>
+    //explicit Shape2D(std::array<float, v_size> _vertices, unsigned int* _indices=nullptr) // NOLINT(readability-non-const-parameter)
+    //    :Shape2D((float*)_vertices, _indices) {  }
 
     // TODO:
     // template <size_t i_size>
@@ -116,14 +133,34 @@ struct Triangle : Shape2D
 
 };
 
-struct Rectangle : Shape2D
+struct Rectangle : public Shape2D
 {
-    Rectangle(const vec4<float>& v)
-        : Shape2D(std::array<float, 4>{v.x, v.y, v.z, v.w}, std::array<unsigned int, 6>{ 0, 1, 3, 1, 2, 3 })
-    {
+    //explicit Rectangle(vec4<vec3<float>>& vertices)
+    //    : Shape2D(&vertices.x.x, 4 * 3, gen_inds(), 6)
+    //{  }
+    explicit Rectangle(float* vertices)
+        : Shape2D(vertices, 4 * 3, gen_inds(), 6)
+    {  }
+    ~Rectangle() { delete[] inds; }
 
+private:
+    static unsigned int inds[6];
+    static unsigned int* gen_inds()
+    {
+        inds = new unsigned int[6] {
+            // * first triangle
+            0, //    top right
+            1, // bottom right
+            3, //    top left
+            // * second triangle
+            1, // bottom right
+            2, // bottom left
+            3  //    top left
+        };
+        return inds;
     }
 };
+
 
 
 int main() {
@@ -137,7 +174,6 @@ int main() {
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // For MacOS
     // glfwWindowHint(GLFW_FLOATING, True); // window is "always on top". Let user decide in context-menu
     // glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, True); // transparent window
-
 
     // create a window of size 800x600 called "LearnOpenGL"
     GLFWwindow* window = glfwCreateWindow(Win_Width, Win_Height, "LearnOpenGL", nullptr, nullptr);
@@ -177,24 +213,13 @@ int main() {
         0.5f,  -0.5f, 0.0f, // no defined color
         -0.5f, 0.5f,  0.0f, // no defined color
     };
-    float rectangle_vertices[] = {
+    float rect_vertices[] = {
         0.5f,  0.5f,  0.0f,  //    top right
         0.5f,  -0.5f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f,  // bottom left
         -0.5f, 0.5f, 0.0f   //    top left
     };
-    /*! @brief specify the order that we want to draw vertices. Store *indices* to a vertex. Used by Element Buffer
-     *  OpenGL uses triangles, the indices will be in order of a triangle (to draw a rectangle, draw 2 triangles) */
-    unsigned int rectangle_indices[] = {
-        // * first triangle
-        0, //    top right
-        1, // bottom right
-        3, //    top left
-        // * second triangle
-        1, // bottom right
-        2, // bottom left
-        3  //    top left
-    };
+    Rectangle rectangle{rect_vertices};
 
 
 
@@ -220,22 +245,20 @@ int main() {
 
         // clear previous frame
         glClear(GL_COLOR_BUFFER_BIT);
-        // use the Vertex Array that holds a specified object/shape we want to render
-        glBindVertexArray(vertex_array);
+
+        rectangle.draw();
 
         /*! @brief Render vertices
          *  @param mode  type of primitive (shape) to render
          *  @param first index of the vertex array where we want to take vertices from
          *  @param count how many vertices to render */
         // glDrawArrays(GL_TRIANGLES, 0, 3); // * USE FOR TRIANGLES
-
-
         /*! @brief Render from indices (not vertices)
          *  @param mode    type of primitive (shape) to render
          *  @param count   how many vertices to render
          *  @param type    data type of indices (e.g. Int, Float, etc.)
          *  @param indices offset of indices to use from the Element Array */
-        glDrawElements(GL_TRIANGLES, 6, Unsigned_Int, nullptr); // * USE FOR MORE COMPLEX SHAPES
+        // glDrawElements(GL_TRIANGLES, 6, Unsigned_Int, nullptr); // * USE FOR MORE COMPLEX SHAPES
 
         // transition from one frame to another with no flickers
         glfwSwapBuffers(window);
