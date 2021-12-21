@@ -4,7 +4,7 @@ project(OpenGL)
 set(CMAKE_CXX_STANDARD 23)
 
 file(GLOB SRC src/cpp/*.cpp)
-add_executable(OpenGL external/glad.c ${SRC} src/cpp/examples.cpp src/headers/examples.h src/cpp/shader-program.cpp src/headers/shader-program.h src/headers/vec.h)
+add_executable(OpenGL external/glad.c ${SRC} src/cpp/examples.cpp src/headers/examples.h src/cpp/shader-program.cpp src/headers/shader-program.h src/headers/vec.h src/headers/primitive.h src/cpp/primitive.cpp src/headers/util.h src/cpp/util.cpp src/cpp/texture.cpp src/headers/texture.h external/stb_image.c)
 
 # get include/header files
 include_directories(src/headers)

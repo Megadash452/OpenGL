@@ -1,10 +1,10 @@
-#pragma once
+#ifndef OPENGL_EVENT_HANDLERS_H
+#define OPENGL_EVENT_HANDLERS_H
+
 #include <functional>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#ifndef OPENGL_EVENT_HANDLERS_H
-#define OPENGL_EVENT_HANDLERS_H
 
 //! @brief Close specified window
 void closeWindow(GLFWwindow* window);

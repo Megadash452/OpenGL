@@ -1,9 +1,8 @@
-#pragma once
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-
 #ifndef OPENGL_EXAMPLES_H
 #define OPENGL_EXAMPLES_H
+
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 
 void drawTriangle(GLFWwindow* window);
