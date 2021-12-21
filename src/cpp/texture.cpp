@@ -8,7 +8,8 @@ Texture::Texture(const char *filename)
     this->bind();
 
     /// --- insert any filtering and wrapping settings. (see this->set_wrap_mode() and this->set_filter_mode())
-    // glTexParameteri(GL_TEXTURE_2D, setting_name, setting_val)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
     // use bilinear filtering with nearest mipmap level (?) when making image smaller
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
@@ -27,7 +28,7 @@ Texture::Texture(const char *filename)
          *  @param _6th legacy:          should always stay 0
          *  @param _7th source_channels: which channels was the original image loaded with (stb_image)
          *  @param _8th type:            the type of data the image is using (stb_image) */
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->_width, this->_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->_width, this->_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else

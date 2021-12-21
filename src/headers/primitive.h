@@ -107,6 +107,13 @@ namespace primitive
 
         // TODO: create constructor where vertex position, color, and tex_coord are separate arrays
 
+        ~Shape2D()
+        {
+            glDeleteVertexArrays(1, &this->vertex_array);
+            glDeleteBuffers(1, &this->vertex_buffer);
+            glDeleteBuffers(1, &this->element_buffer);
+        }
+
     private:
         /*! @brief Specify the order to draw vertices. Stores *indices* to a vertex. Used by Element Buffer
          *  OpenGL uses triangles, the indices will be in order of a triangle (to draw a rectangle, draw 2 triangles) */

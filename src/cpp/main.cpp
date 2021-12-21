@@ -49,7 +49,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, onWindowResize);
 
 
-    // --- Define Shapes ---
+    // --- Define Shapes (work like masks)---
     ShaderProgram basic_shader{  };
     primitive::Rectangle rectangle{ vec2<float>{-1, 0.5}, vec2<float>{1, 1} };
 
@@ -57,16 +57,16 @@ int main() {
         Shaders_Path"/texture.vert.glsl",
         Shaders_Path"/texture.frag.glsl"
     };
-    // TODO: texture doesnt render
     Texture heart_tex{ Resource_Path"/heart.png" };
+    // tex_shader.set_uniform("texture_data", heart_tex.gl_texture);
     primitive::Shape2D tex_rectangle{
         std::array<float, 4*3 + 4*4 + 4*2> {
-            //position    //color       // tex_coord
-            -1,  0.5, 0,   0, 0, 0, 0,   0, 1, //    top left
-            -1, -0.5, 0,   0, 0, 0, 0,   0, 0, // bottom left
-             0,  0.5, 0,   0, 0, 0, 0,   1, 1, //    top right
-             0, -0.5, 0,   0, 0, 0, 0,   1, 0  // bottom right
-        }, 9,
+           //position //color       // tex_coord
+            0, 1, 0,   0, 1, 0, 1,   0, 1, //    top left
+            0, 0, 0,   1, 0, 0, 1,   0, 0, // bottom left
+            1, 1, 0,   0, 1, 0, 1,   1, 1, //    top right
+            1, 0, 0,   0, 0, 1, 1,   1, 0  // bottom right
+        }, 3 + 4 + 2,
         std::array<unsigned int, 6> {
             0, 1, 3,  0, 2, 3
         }
@@ -119,10 +119,11 @@ int main() {
         // clear previous frame
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // basic_shader.use();
-        // rectangle.draw();
+        basic_shader.use();
+        rectangle.draw();
         //
         tex_shader.use();
+        // TODO: app crashes when drawing this and when the fragment shader uses the color input (exit code -1073741819 (0xC0000005))
         tex_rectangle.draw();
         //
         //uniform_color_shader.use();

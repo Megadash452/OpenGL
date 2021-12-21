@@ -70,7 +70,6 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
     glLinkProgram(this->GL_program);
     // check for errors when attaching shaders
     glGetProgramiv(this->GL_program, GL_LINK_STATUS, &no_errors);
-    // TODO: getting GL_Link error with no description
     if (!no_errors)
     {
         char error_info[512];
@@ -95,8 +94,14 @@ void ShaderProgram::bind() const { glUseProgram(this->GL_program); }
 
 void ShaderProgram::set_uniform(const char *uniform, vec4<float> val) const
 {
-    int uniform_location = glGetUniformLocation(this->GL_program, uniform);
     // have to use Shader Program before setting the uniform value
     this->use();
-    glUniform4f(uniform_location, val.x, val.y, val.z, val.w);
+    glUniform4f(glGetUniformLocation(this->GL_program, uniform), val.x, val.y, val.z, val.w);
+}
+
+void ShaderProgram::set_uniform(const char *uniform, int val) const
+{
+    // have to use Shader Program before setting the uniform value
+    this->use();
+    glUniform1i(glGetUniformLocation(this->GL_program, uniform), val);
 }

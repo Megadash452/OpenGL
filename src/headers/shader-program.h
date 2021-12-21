@@ -28,6 +28,9 @@ struct ShaderProgram {
     void get_uniform(const char* uniform) const;
 
     void set_uniform(const char* uniform, vec4<float> val) const;
+    void set_uniform(const char* uniform, float val) const;
+    void set_uniform(const char* uniform, int val) const;
+    void set_uniform(const char* uniform, unsigned int val) const;
 };
 
 
