@@ -2,7 +2,7 @@
 using std::string;
 
 
-ShaderProgram::ShaderProgram(bool use_now, const char* vert_shader_path, const char* frag_shader_path)
+ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shader_path)
 {
     int no_errors;
 
@@ -70,15 +70,13 @@ ShaderProgram::ShaderProgram(bool use_now, const char* vert_shader_path, const c
     glLinkProgram(this->GL_program);
     // check for errors when attaching shaders
     glGetProgramiv(this->GL_program, GL_LINK_STATUS, &no_errors);
+    // TODO: getting GL_Link error with no description
     if (!no_errors)
     {
         char error_info[512];
         glGetShaderInfoLog(fragment_shader, 512, nullptr, error_info);
         std::cerr << "Link Error: Failed to bind shader program <FRAGMENT SHADER>\n" << error_info << std::endl;
     }
-
-    if (use_now)
-        this->bind();
 
     // these are already compiled and used by this->program, so they have no use now
     glDeleteShader(vertex_shader);

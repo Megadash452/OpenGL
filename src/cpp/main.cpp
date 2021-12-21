@@ -15,8 +15,6 @@ using std::string;
 
 
 int main() {
-    std::cout << "init\n";
-
     // initialize GLFW
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // version 3.x
@@ -52,10 +50,10 @@ int main() {
 
 
     // --- Define Shapes ---
-    ShaderProgram basic_shader{ false};
+    ShaderProgram basic_shader{  };
     primitive::Rectangle rectangle{ vec2<float>{-1, 0.5}, vec2<float>{1, 1} };
 
-    ShaderProgram tex_shader{ false,
+    ShaderProgram tex_shader{
         Shaders_Path"/texture.vert.glsl",
         Shaders_Path"/texture.frag.glsl"
     };
@@ -74,7 +72,7 @@ int main() {
         }
     };
 
-    ShaderProgram uniform_color_shader{ false, nullptr, Shaders_Path"/uniform-color.frag.glsl" };
+    ShaderProgram uniform_color_shader{ nullptr, Shaders_Path"/uniform-color.frag.glsl" };
     uniform_color_shader.set_uniform("color", {0.5f, 0.4f, 0.3f, 0.0f});
     primitive::Triangle triangle{ std::array<float, 3*3> {
         0.0f, -0.5f, 0.0f, // bottom left
@@ -82,7 +80,7 @@ int main() {
         0.5f,  0.5f, 0.0f, //    top middle
     } };
 
-    ShaderProgram gradient_shader{ false,
+    ShaderProgram gradient_shader{
         Shaders_Path"/gradient.vert.glsl",
         Shaders_Path"/gradient.frag.glsl"
     };
@@ -127,11 +125,11 @@ int main() {
         tex_shader.use();
         tex_rectangle.draw();
         //
-        uniform_color_shader.use();
-        triangle.draw();
-        //
-        gradient_shader.use();
-        gradient_triangle.draw();
+        //uniform_color_shader.use();
+        //triangle.draw();
+        ////
+        //gradient_shader.use();
+        //gradient_triangle.draw();
 
         /*! @brief Render vertices
          *  @param mode  type of primitive (shape) to render

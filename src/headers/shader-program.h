@@ -19,7 +19,7 @@ struct ShaderProgram {
      *  @param use_now bind Shader Program as soon as it is created
      *  @param vert_shader_path file path GLSL source code for vertex shader. If not given, will use default shader
      *  @param frag_shader_path file path GLSL source code for fragment shader. If not given, will use default shader */
-    explicit ShaderProgram(bool use_now, const char* vert_shader_path=nullptr, const char* frag_shader_path=nullptr);
+    explicit ShaderProgram(const char* vert_shader_path=nullptr, const char* frag_shader_path=nullptr);
 
     void use() const;
     //! @brief alias to shader-program::use()
