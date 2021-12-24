@@ -122,8 +122,9 @@ int main() {
         basic_shader.use();
         rectangle.draw();
         //
+        // tex_shader.use();
         tex_shader.use();
-        // TODO: app crashes when drawing this and when the fragment shader uses the color input (exit code -1073741819 (0xC0000005))
+        // TODO: app crashes when drawing with texture shader when it uses the color input (exit code -1073741819 (0xC0000005))
         tex_rectangle.draw();
         //
         //uniform_color_shader.use();

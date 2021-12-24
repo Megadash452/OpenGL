@@ -30,7 +30,8 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
     {
         char error_info[512];
         glGetShaderInfoLog(vertex_shader, 512, nullptr, error_info);
-        std::cerr << "Compilation Error: Failed to compile shader <VERTEX SHADER>:\n" << error_info << std::endl;
+        std::cerr << "Compilation Error: Failed to compile shader <VERTEX SHADER>:\n"
+                  << "Shader loaded from file \"" << vert_shader_path << "\"" << error_info << std::endl;
     }
 
 
@@ -58,7 +59,8 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
     {
         char error_info[512];
         glGetShaderInfoLog(fragment_shader, 512, nullptr, error_info);
-        std::cerr << "Compilation Error: Failed to compile shader <FRAGMENT SHADER>:\n" << error_info << std::endl;
+        std::cerr << "Compilation Error: Failed to compile shader <FRAGMENT SHADER>:\n"
+                  << "Shader loaded from file \"" << frag_shader_path << "\"" << error_info << std::endl;
     }
 
 
@@ -74,7 +76,10 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
     {
         char error_info[512];
         glGetShaderInfoLog(fragment_shader, 512, nullptr, error_info);
-        std::cerr << "Link Error: Failed to bind shader program <FRAGMENT SHADER>\n" << error_info << std::endl;
+        std::cerr << "Link Error: Failed to bind shader program\n"
+                  << "Shader Program contains the following shaders:\n"
+                  << "    \"" << vert_shader_path << "\"\n"
+                  << "    \"" << frag_shader_path << "\"\n" << std::endl;
     }
 
     // these are already compiled and used by this->program, so they have no use now
