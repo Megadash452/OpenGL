@@ -86,21 +86,21 @@ namespace primitive
              *          (if vertices have color, the size would be 3 but stride would be 16 (4 * sizeof(float))
              *  @param offset where to start reading data from in the array. nullptr=beginning */
             // position attribute
-            glVertexAttribPointer(0, 3, Float, False, GLsizei(vertex_length * sizeof(float)), nullptr);
+            glVertexAttribPointer(0, 3, Float, False, int(vertex_length * sizeof(float)), nullptr);
             glEnableVertexAttribArray(0);
 
             if (vertex_length > 3) // vertices contain color attribute (RGBA)
             {
                 // use with shaders that take in the layout location = 1 attribute
                 // color attribute // <offset> start reading color after 3 floats (constitutes to x, y, z position)
-                glVertexAttribPointer(1, GLint(vertex_length - 3), Float, False,
-                                      GLsizei(vertex_length * sizeof(float)), (void*)(3 * sizeof(float))
+                glVertexAttribPointer(1, int(vertex_length - 3),    Float  , False,
+                                         int(vertex_length * sizeof(float)), (void*)(3 * sizeof(float))
                 );  glEnableVertexAttribArray(1);
             }
             if (vertex_length > 7) // vertices contain texture coordinates
             {
-                glVertexAttribPointer(2, GLint(vertex_length - 7), Float, False,
-                                      GLsizei(vertex_length * sizeof(float)), (void*)(7 * sizeof(float))
+                glVertexAttribPointer(2, int(vertex_length - 7),    Float  , False,
+                                         int(vertex_length * sizeof(float)), (void*)(7 * sizeof(float))
                 );  glEnableVertexAttribArray(2);
             }
         }

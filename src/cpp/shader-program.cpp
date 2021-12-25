@@ -76,7 +76,7 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
     {
         char error_info[512];
         glGetShaderInfoLog(fragment_shader, 512, nullptr, error_info);
-        std::cerr << "Link Error: Failed to bind shader program\n"
+        std::cerr << "Link Error: Failed to link shader program\n"
                   << "Shader Program contains the following shaders:\n"
                   << "    \"" << vert_shader_path << "\"\n"
                   << "    \"" << frag_shader_path << "\"\n" << std::endl;
@@ -97,14 +97,14 @@ void ShaderProgram::bind() const { glUseProgram(this->GL_program); }
 // }
 
 
-void ShaderProgram::set_uniform(const char *uniform, vec4<float> val) const
+void ShaderProgram::set_uniform(const char* uniform, vec4<float> val) const
 {
     // have to use Shader Program before setting the uniform value
     this->use();
     glUniform4f(glGetUniformLocation(this->GL_program, uniform), val.x, val.y, val.z, val.w);
 }
 
-void ShaderProgram::set_uniform(const char *uniform, int val) const
+void ShaderProgram::set_uniform(const char* uniform, int val) const
 {
     // have to use Shader Program before setting the uniform value
     this->use();

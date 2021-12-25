@@ -32,15 +32,13 @@ Texture::Texture(const char *filename)
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
-    {
         std::cerr << "Error loading texture at path \"" << filename << "\"" << std::endl;
-    }
 
     // delete image data from the cpu
     stbi_image_free(data);
 }
 
-void Texture::set_wrap_mode(vec3<GLint> modes) const
+void Texture::set_wrap_mode(vec3<int> modes) const
 {
     this->bind();
     float b[] = {
@@ -66,7 +64,7 @@ void Texture::set_wrap_mode(vec3<GLint> modes) const
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, modes.z);
 }
 
-void Texture::set_filter_mode(vec2<GLint> modes) const
+void Texture::set_filter_mode(vec2<int> modes) const
 {
     this->bind();
 

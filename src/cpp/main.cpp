@@ -10,7 +10,7 @@ using std::string;
 #define Win_Height     600
 #define Win_Min_Height 100
 
-#define Shaders_Path "../../src/shaders"
+#define Shaders_Path  "../../src/shaders"
 #define Resource_Path "../../res"
 
 
@@ -57,8 +57,8 @@ int main() {
         Shaders_Path"/texture.vert.glsl",
         Shaders_Path"/texture.frag.glsl"
     };
+    stbi_set_flip_vertically_on_load(true); // flip textures on the y-axis when loading them
     Texture heart_tex{ Resource_Path"/heart.png" };
-    // tex_shader.set_uniform("texture_data", heart_tex.gl_texture);
     primitive::Shape2D tex_rectangle{
         std::array<float, 4*3 + 4*4 + 4*2> {
            //position //color       // tex_coord
@@ -72,30 +72,34 @@ int main() {
         }
     };
 
-    ShaderProgram uniform_color_shader{ nullptr, Shaders_Path"/uniform-color.frag.glsl" };
-    uniform_color_shader.set_uniform("color", {0.5f, 0.4f, 0.3f, 0.0f});
-    primitive::Triangle triangle{ std::array<float, 3*3> {
-        0.0f, -0.5f, 0.0f, // bottom left
-        1.0f, -0.5f, 0.0f, // bottom right
-        0.5f,  0.5f, 0.0f, //    top middle
-    } };
+    // ShaderProgram uniform_color_shader{ nullptr, Shaders_Path"/uniform-color.frag.glsl" };
+    // uniform_color_shader.set_uniform("color", {0.5f, 0.4f, 0.3f, 0.0f});
+    // primitive::Triangle triangle{ std::array<float, 3*3> {
+    //     0.0f, -0.5f, 0.0f, // bottom left
+    //     1.0f, -0.5f, 0.0f, // bottom right
+    //     0.5f,  0.5f, 0.0f, //    top middle
+    // } };
+    //
+    // ShaderProgram gradient_shader{
+    //     Shaders_Path"/gradient.vert.glsl",
+    //     Shaders_Path"/gradient.frag.glsl"
+    // };
+    // // triangle acts like a mask?? // doesn't blend with other shapes and bg
+    // primitive::Shape2D gradient_triangle{
+    //     std::array<float, 3*3 + 4*3> {
+    //         //position        //color
+    //         -0.5f, -1.0f, 0,   1, 0, 0, 0.0, // bottom left
+    //          0.0f,  0.0f, 0,   0, 1, 0, 0.0, //    top middle
+    //          0.5f, -1.0f, 0,   0, 0, 1, 0.0  // bottom right
+    //     }, 7,
+    //     std::array<unsigned int, 3> {
+    //         0, 1, 2
+    //     }
+    // };
 
-    ShaderProgram gradient_shader{
-        Shaders_Path"/gradient.vert.glsl",
-        Shaders_Path"/gradient.frag.glsl"
-    };
-    // triangle acts like a mask?? // doesn't blend with other shapes and bg
-    primitive::Shape2D gradient_triangle{
-        std::array<float, 3*3 + 4*3> {
-            //position        //color
-            -0.5f, -1.0f, 0,   1, 0, 0, 0.0, // bottom left
-             0.0f,  0.0f, 0,   0, 1, 0, 0.0, //    top middle
-             0.5f, -1.0f, 0,   0, 0, 1, 0.0  // bottom right
-        }, 7,
-        std::array<unsigned int, 3> {
-            0, 1, 2
-        }
-    };
+
+    // -- set texture uniforms
+    tex_shader.set_uniform("texture_data", 0);
 
 
     //! @brief Fill the color buffer with this color. Acts as a background color
@@ -107,7 +111,6 @@ int main() {
      *  @param mode what to draw*/
     // glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); // only draws the vertices
     // glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); // only draws the outline of a shape
-
 
     //! @brief Render loop
     while(!glfwWindowShouldClose(window))
@@ -122,14 +125,15 @@ int main() {
         basic_shader.use();
         rectangle.draw();
         //
-        // tex_shader.use();
         tex_shader.use();
-        // TODO: app crashes when drawing with texture shader when it uses the color input (exit code -1073741819 (0xC0000005))
+        glActiveTexture(GL_TEXTURE0); // texture unit
+        heart_tex.use();
+        // TODO: app crashes when drawing with texture shader when frag uses the color input (exit code -1073741819 (0xC0000005))
         tex_rectangle.draw();
         //
         //uniform_color_shader.use();
         //triangle.draw();
-        ////
+        //
         //gradient_shader.use();
         //gradient_triangle.draw();
 

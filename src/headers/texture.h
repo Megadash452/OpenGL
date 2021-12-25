@@ -21,7 +21,7 @@ public:
      *         // GL_MIRRORED_REPEAT: Every other iteration of the repeat is mirrored (works in both x- and y-axis)
      *         // GL_CLAMP_TO_EDGE:   Repeats the last pixel at the edge of the texture
      *         // GL_CLAMP_TO_BORDER: Use a border color. Have to set this->border_col first (default is transparent) */
-    void set_wrap_mode(vec3<GLint> modes) const;
+    void set_wrap_mode(vec3<int> modes) const;
 
     /*! @brief Set how the image scales up and down (minifying and magnifying).
      *  @param modes a vec containing the wrap modes for MIN and MAG modes. Mode is one of these enums:
@@ -33,7 +33,7 @@ public:
      *         // _MIPMAP_Linear:
      *  @brief // Using mipmap with magnification has no effect because mipmap only creates images 2x smaller
                // Using mipmap here will give GL_INVALID_ENUM error code */
-    void set_filter_mode(vec2<GLint> modes) const;
+    void set_filter_mode(vec2<int> modes) const;
 
     void use() const;
     //! @brief alias to this->use()
