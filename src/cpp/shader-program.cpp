@@ -4,8 +4,6 @@ using std::string;
 
 ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shader_path)
 {
-    int no_errors;
-
     /// --- VERTEX SHADER ---
     string vert_shader_src;
     // if no vertex shader was provided, use default
