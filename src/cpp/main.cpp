@@ -14,7 +14,7 @@ using std::string;
 #define Resource_Path "../../res"
 
 
-int main() {
+int mainvf() {
     // initialize GLFW
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // version 3.x

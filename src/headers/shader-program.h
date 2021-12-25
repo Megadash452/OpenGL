@@ -13,7 +13,7 @@
 //! @brief Shader Programs contain compiled shaders, uniforms, and define how to draw something
 struct ShaderProgram {
     //! @brief ID to the Shader Program on the GPU
-    unsigned int GL_program;
+    unsigned int gl_program;
 
     /*! @brief Create shader program with Vertex and Fragment Shaders.
      *  @param use_now bind Shader Program as soon as it is created

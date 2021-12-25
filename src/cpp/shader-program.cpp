@@ -66,12 +66,12 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
 
 
     // --- SHADER PROGRAM ---
-    this->GL_program = glCreateProgram();
-    glAttachShader(this->GL_program, vertex_shader);
-    glAttachShader(this->GL_program, fragment_shader);
-    glLinkProgram(this->GL_program);
+    this->gl_program = glCreateProgram();
+    glAttachShader(this->gl_program, vertex_shader);
+    glAttachShader(this->gl_program, fragment_shader);
+    glLinkProgram(this->gl_program);
     // check for errors when attaching shaders
-    glGetProgramiv(this->GL_program, GL_LINK_STATUS, &no_errors);
+    glGetProgramiv(this->gl_program, GL_LINK_STATUS, &no_errors);
     if (!no_errors)
     {
         char error_info[512];
@@ -87,8 +87,8 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
     glDeleteShader(fragment_shader);
 }
 
-void ShaderProgram::use()  const { glUseProgram(this->GL_program); }
-void ShaderProgram::bind() const { glUseProgram(this->GL_program); }
+void ShaderProgram::use()  const { glUseProgram(this->gl_program); }
+void ShaderProgram::bind() const { glUseProgram(this->gl_program); }
 
 
 // void ShaderProgram::get_uniform(const char *uniform)
@@ -101,12 +101,19 @@ void ShaderProgram::set_uniform(const char* uniform, vec4<float> val) const
 {
     // have to use Shader Program before setting the uniform value
     this->use();
-    glUniform4f(glGetUniformLocation(this->GL_program, uniform), val.x, val.y, val.z, val.w);
+    glUniform4f(glGetUniformLocation(this->gl_program, uniform), val.x, val.y, val.z, val.w);
+}
+
+void ShaderProgram::set_uniform(const char* uniform, float val) const
+{
+    // have to use Shader Program before setting the uniform value
+    this->use();
+    glUniform1f(glGetUniformLocation(this->gl_program, uniform), val);
 }
 
 void ShaderProgram::set_uniform(const char* uniform, int val) const
 {
     // have to use Shader Program before setting the uniform value
     this->use();
-    glUniform1i(glGetUniformLocation(this->GL_program, uniform), val);
+    glUniform1i(glGetUniformLocation(this->gl_program, uniform), val);
 }
