@@ -31,6 +31,10 @@ struct ShaderProgram {
     void set_uniform(const char* uniform, float val) const;
     void set_uniform(const char* uniform, int val) const;
     void set_uniform(const char* uniform, unsigned int val) const;
+
+private:
+    void checkProgramCompileErrors() const;
+    static void checkShaderCompileErrors(unsigned int shader, const char* shader_type="");
 };
 
 
