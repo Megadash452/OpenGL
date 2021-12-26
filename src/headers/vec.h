@@ -1,8 +1,7 @@
 #ifndef OPENGL_VEC_H
 #define OPENGL_VEC_H
 #include <stdexcept>
-#include <string>
-using std::string;
+#include <iostream>
 
 #define SQR(x) x*x
 
@@ -20,33 +19,47 @@ struct vec1
 {
     Type x;
 
-    explicit vec1(Type _x)              : x(_x)  {  }
-    explicit vec1(const vec2<Type>& v)  : x(v.x) {  }
-    explicit vec1(const vec3<Type>& v)  : x(v.x) {  }
-    explicit vec1(const vec4<Type>& v)  : x(v.x) {  }
+    explicit vec1(Type _x)             : x(_x)  {  }
+    explicit vec1(const vec2<Type>& v) : x(v.x) {  }
+    explicit vec1(const vec3<Type>& v) : x(v.x) {  }
+    explicit vec1(const vec4<Type>& v) : x(v.x) {  }
 
-    // function only works when the Type stored is a number (char, int, float, etc..)
-    [[nodiscard]] double length() const
-    requires std::is_arithmetic_v<Type>
-    {
-        return this->x;
-    }
+    //! @brief For printing a vec1 object
+    friend std::ostream& operator<<(std::ostream& os, const vec1& v);
+
+    //! @brief The Pythagoras Theorem. Only works when the Type stored is a number (char, int, float, etc..)
+    [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the Unit Vector (length=1). Components Type must be a number (char, int, float, etc..)
-    vec1 normalized() const
-    requires std::is_arithmetic_v<Type>
-    {
-        return { 1 };
-    }
+    vec1& normalized() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the ith component of this vector (like an array)
-    Type& operator[](unsigned int i) const
-    {
-        if (i < 1)
-            return *(&this->x + i);
-        throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec1 only has 1 component"};
-    }
+    Type& operator[](unsigned int i) const;
+
+    // vector addition
+    template<typename Type2> vec4<Type>& operator+(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator+(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator+(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec1<Type>& operator+(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec1<Type>& operator+(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    // vector subtraction
+    template<typename Type2> vec4<Type>& operator-(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator-(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator-(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec1<Type>& operator-(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec1<Type>& operator-(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
 };
+
 
 template<typename Type>
 struct vec2
@@ -58,32 +71,42 @@ struct vec2
     explicit vec2(const vec3<Type>& v)          : x(v.x), y(v.y) {  }
     explicit vec2(const vec4<Type>& v)          : x(v.x), y(v.y) {  }
 
+    //! @brief For printing a vec1 object
+    friend std::ostream& operator<<(std::ostream& os, const vec2& v);
+
     // function only works when the Type stored is a number (char, int, float, etc..)
-    [[nodiscard]] double length() const
-    requires std::is_arithmetic_v<Type>
-    {
-        return sqrt(SQR(this->x) + SQR(this->y));
-    }
+    [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the Unit Vector (length=1). Components Type must be a number (char, int, float, etc..)
-    vec2 normalized() const
-    requires std::is_arithmetic_v<Type>
-    {
-        double len = this->length();
-        return {
-            this->x / len,
-            this->y / len
-        };
-    }
+    vec2& normalized() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the ith component of this vector (like an array)
-    Type& operator[](unsigned int i) const
-    {
-        if (i < 2)
-            return *(&this->x + i);
-        throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec2 only has 2 components"};
-    }
+    Type& operator[](unsigned int i) const;
+
+    // vector addition
+    template<typename Type2> vec4<Type>& operator+(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator+(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator+(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator+(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator+(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    // vector subtraction
+    template<typename Type2> vec4<Type>& operator-(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator-(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator-(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator-(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec2<Type>& operator-(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
 };
+
 
 template <typename Type>
 struct vec3
@@ -95,33 +118,42 @@ struct vec3
              vec3(Type _x, Type _y, Type _z)             : x(_x),  y(_y),  z(_z)  {  }
     explicit vec3(const vec4<Type>& v)                   : x(v.x), y(v.y), z(v.z) {  }
 
+    //! @brief For printing a vec1 object
+    friend std::ostream& operator<<(std::ostream& os, const vec3& v);
+
     // function only works when the Type stored is a number (char, int, float, etc..)
-    [[nodiscard]] double length() const
-    requires std::is_arithmetic_v<Type>
-    {
-        return sqrt(SQR(this->x) + SQR(this->y) + SQR(this->z));
-    }
+    [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the Unit Vector (length=1). Components Type must be a number (char, int, float, etc..)
-    vec3 normalized() const
-    requires std::is_arithmetic_v<Type>
-    {
-        double len = this->length();
-        return {
-            this->x / len,
-            this->y / len,
-            this->z / len
-        };
-    }
+    vec3& normalized() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the ith component of this vector (like an array)
-    Type& operator[](unsigned int i) const
-    {
-        if (i < 3)
-            return *(&this->x + i);
-        throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec3 only has 3 components"};
-    }
+    Type& operator[](unsigned int i) const;
+
+    // vector addition
+    template<typename Type2> vec4<Type>& operator+(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator+(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator+(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator+(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator+(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    // vector subtraction
+    template<typename Type2> vec4<Type>& operator-(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator-(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator-(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator-(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec3<Type>& operator-(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                      std::is_arithmetic_v<Type2>;
 };
+
 
 template <typename Type>
 struct vec4
@@ -133,100 +165,44 @@ struct vec4
     vec4(const vec3<Type>& v, Type _w)                   : x(v.x), y(v.y), z(v.z), w(_w) {  }
     vec4(Type _x, Type _y, Type _z, Type _w)             : x(_x),  y(_y),  z(_z),  w(_w) {  }
 
+    //! @brief For printing a vec1 object
+    friend std::ostream& operator<<(std::ostream& os, const vec4& v);
+
     // function only works when the Type stored is a number (char, int, float, etc..)
-    [[nodiscard]] double length() const
-    requires std::is_arithmetic_v<Type>
-    {
-        return sqrt(SQR(this->x) + SQR(this->y) + SQR(this->z) + SQR(this->w));
-    }
+    [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the Unit Vector (length=1). Components Type must be a number (char, int, float, etc..)
-    vec4 normalized() const
-    requires std::is_arithmetic_v<Type>
-    {
-        double len = this->length();
-        return {
-            this->x / len,
-            this->y / len,
-            this->z / len,
-            this->w / len
-        };
-    }
+    vec4& normalized() const requires std::is_arithmetic_v<Type>;
 
     //! @brief Get the ith component of this vector (like an array)
-    Type& operator[](unsigned int i) const
-    {
-        if (i < 3)
-            return *(&this->x + i);
-        throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec3 only has 3 components"};
-    }
+    Type& operator[](unsigned int i) const;
 
     // vector addition
-    template<typename Type2> vec4& operator+(const vec4<Type2>& other) const
-    requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
-    {
-        return {
-            this->x + other.x,
-            this->y + other.y,
-            this->z + other.z,
-            this->w + other.w,
-        };
-    }
-    template<typename Type2> vec4& operator+(const vec3<Type2>& other) const
-    requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
-    {
-        return {
-            this->x + other.x,
-            this->y + other.y,
-            this->z + other.z,
-            this->w,
-        };
-    }
-    template<typename Type2> vec4& operator+(const vec2<Type2>& other) const
-    requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
-    {
-        return {
-            this->x + other.x,
-            this->y + other.y,
-            this->z,
-            this->w,
-        };
-    }
-    template<typename Type2> vec4& operator+(const vec1<Type2>& other) const
-    requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
-    {
-        return {
-            this->x + other.x,
-            this->y,
-            this->z,
-            this->w,
-        };
-    }
-    template<typename Type2> vec4& operator+(const Type2& val) const
-    requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
-    {
-        return {
-            this->x + val,
-            this->y + val,
-            this->z + val,
-            this->w + val,
-        };
-    }
-
+    template<typename Type2> vec4& operator+(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator+(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator+(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator+(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator+(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
     // vector subtraction
-    template<typename Type2> vec4& operator-(const vec4<Type2>& other) const
-    requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
-    {
-        return {
-            this->x - other.x,
-            this->y - other.y,
-            this->z - other.z,
-            this->w - other.w,
-        };
-    }
+    template<typename Type2> vec4& operator-(const vec4<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator-(const vec3<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator-(const vec2<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator-(const vec1<Type2>&) const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
+    template<typename Type2> vec4& operator-(const Type2&)       const requires std::is_arithmetic_v<Type>   &&
+                                                                                std::is_arithmetic_v<Type2>;
 
     // TODO: cross and dot multiply
 };
+
 
 // TODO: maike struct, and make constructor for vecs here and there
 template<typename Type>
