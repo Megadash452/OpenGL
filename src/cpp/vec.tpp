@@ -1,6 +1,3 @@
-#include "vec.h"
-
-
 /// --- VEC1 ---
 template<typename Type>
 double vec1<Type>::length() const
@@ -34,7 +31,7 @@ Type vec1<Type>::operator[](unsigned char i) const
 // -- vector addition
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec1<Type>::operator+(const vec4<Type2>& other) const
+vec4<Type> vec1<Type>::operator+(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -46,7 +43,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec1<Type>::operator+(const vec3<Type2>& other) const
+vec3<Type> vec1<Type>::operator+(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -57,7 +54,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec1<Type>::operator+(const vec2<Type2>& other) const
+vec2<Type> vec1<Type>::operator+(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -67,7 +64,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec1<Type>& vec1<Type>::operator+(const vec1<Type2>& other) const
+vec1<Type> vec1<Type>::operator+(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -76,7 +73,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec1<Type>& vec1<Type>::operator+(const Type2& val) const
+vec1<Type> vec1<Type>::operator+(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -87,7 +84,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 // -- vector subtraction
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec1<Type>::operator-(const vec4<Type2>& other) const
+vec4<Type> vec1<Type>::operator-(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -99,7 +96,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec1<Type>::operator-(const vec3<Type2>& other) const
+vec3<Type> vec1<Type>::operator-(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -110,7 +107,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec1<Type>::operator-(const vec2<Type2>& other) const
+vec2<Type> vec1<Type>::operator-(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -120,7 +117,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec1<Type>& vec1<Type>::operator-(const vec1<Type2>& other) const
+vec1<Type> vec1<Type>::operator-(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -129,11 +126,40 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec1<Type>& vec1<Type>::operator-(const Type2& val) const
+vec1<Type> vec1<Type>::operator-(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
         this->x - val
+    };
+}
+
+// -- vector division
+
+template<typename Type> template<typename Type2>
+vec1<Type> vec1<Type>::operator/(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x / val
+    };
+}
+
+// -- vector multiplication
+
+template<typename Type> template<typename Type2>
+double vec1<Type>::dot_mult(const vec1<Type2>& other) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return (double) this->x * other.x;
+}
+
+template<typename Type> template<typename Type2>
+vec1<Type> vec1<Type>::operator*(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x * val
     };
 }
 
@@ -177,7 +203,7 @@ Type vec2<Type>::operator[](unsigned char i) const
 // -- vector addition
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec2<Type>::operator+(const vec4<Type2>& other) const
+vec4<Type> vec2<Type>::operator+(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -189,7 +215,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec2<Type>::operator+(const vec3<Type2>& other) const
+vec3<Type> vec2<Type>::operator+(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -200,7 +226,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec2<Type>::operator+(const vec2<Type2>& other) const
+vec2<Type> vec2<Type>::operator+(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -210,7 +236,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec2<Type>::operator+(const vec1<Type2>& other) const
+vec2<Type> vec2<Type>::operator+(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -220,7 +246,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec2<Type>::operator+(const Type2& val) const
+vec2<Type> vec2<Type>::operator+(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -232,7 +258,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 // -- vector subtraction
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec2<Type>::operator-(const vec4<Type2>& other) const
+vec4<Type> vec2<Type>::operator-(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -244,7 +270,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec2<Type>::operator-(const vec3<Type2>& other) const
+vec3<Type> vec2<Type>::operator-(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -255,7 +281,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec2<Type>::operator-(const vec2<Type2>& other) const
+vec2<Type> vec2<Type>::operator-(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -265,7 +291,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec2<Type>::operator-(const vec1<Type2>& other) const
+vec2<Type> vec2<Type>::operator-(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -275,12 +301,44 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec2<Type>& vec2<Type>::operator-(const Type2& val) const
+vec2<Type> vec2<Type>::operator-(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
         this->x - val,
         this->y - val
+    };
+}
+
+// -- vector division
+
+template<typename Type> template<typename Type2>
+vec2<Type> vec2<Type>::operator/(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x / val,
+        this->y / val
+    };
+}
+
+// -- vector multiplication
+
+template<typename Type> template<typename Type2>
+double vec2<Type>::dot_mult(const vec2<Type2>& other) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return (double) this->x * other.x +
+           (double) this->y * other.y ;
+}
+
+template<typename Type> template<typename Type2>
+vec2<Type> vec2<Type>::operator*(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x * val,
+        this->y * val
     };
 }
 
@@ -324,7 +382,7 @@ Type vec3<Type>::operator[](unsigned char i) const
 // -- vector addition
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec3<Type>::operator+(const vec4<Type2>& other) const
+vec4<Type> vec3<Type>::operator+(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -336,7 +394,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator+(const vec3<Type2>& other) const
+vec3<Type> vec3<Type>::operator+(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -347,7 +405,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator+(const vec2<Type2>& other) const
+vec3<Type> vec3<Type>::operator+(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -358,7 +416,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator+(const vec1<Type2>& other) const
+vec3<Type> vec3<Type>::operator+(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -369,7 +427,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator+(const Type2& val) const
+vec3<Type> vec3<Type>::operator+(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -382,7 +440,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 // -- vector subtraction
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec3<Type>::operator-(const vec4<Type2>& other) const
+vec4<Type> vec3<Type>::operator-(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -394,7 +452,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator-(const vec3<Type2>& other) const
+vec3<Type> vec3<Type>::operator-(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -405,7 +463,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator-(const vec2<Type2>& other) const
+vec3<Type> vec3<Type>::operator-(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -416,7 +474,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator-(const vec1<Type2>& other) const
+vec3<Type> vec3<Type>::operator-(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -427,13 +485,59 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec3<Type>& vec3<Type>::operator-(const Type2& val) const
+vec3<Type> vec3<Type>::operator-(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
         this->x - val,
         this->y - val,
         this->z - val
+    };
+}
+
+// -- vector division
+
+template<typename Type> template<typename Type2>
+vec3<Type> vec3<Type>::operator/(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x / val,
+        this->y / val,
+        this->z / val
+    };
+}
+
+// -- vector multiplication
+
+template<typename Type> template<typename Type2>
+double vec3<Type>::dot_mult(const vec3<Type2>& other) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return (double) this->x * other.x +
+           (double) this->y * other.y +
+           (double) this->z * other.z ;
+}
+
+template<typename Type> template<typename Type2>
+vec3<double> vec3<Type>::cross_mult(const vec3<Type2>& other) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        (double) this->y * other.z - this->z * other.y,
+        (double) this->z * other.x - this->x * other.z,
+        (double) this->x * other.y - this->y * other.x
+    };
+}
+
+template<typename Type> template<typename Type2>
+vec3<Type> vec3<Type>::operator*(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x * val,
+        this->y * val,
+        this->z * val
     };
 }
 
@@ -478,7 +582,7 @@ Type vec4<Type>::operator[](unsigned char i) const
 // -- vector addition
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator+(const vec4<Type2>& other) const
+vec4<Type> vec4<Type>::operator+(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -490,7 +594,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator+(const vec3<Type2>& other) const
+vec4<Type> vec4<Type>::operator+(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -502,7 +606,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator+(const vec2<Type2>& other) const
+vec4<Type> vec4<Type>::operator+(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -514,7 +618,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator+(const vec1<Type2>& other) const
+vec4<Type> vec4<Type>::operator+(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -526,7 +630,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator+(const Type2& val) const
+vec4<Type> vec4<Type>::operator+(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -540,7 +644,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 // -- vector subtraction
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator-(const vec4<Type2>& other) const
+vec4<Type> vec4<Type>::operator-(const vec4<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -552,7 +656,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator-(const vec3<Type2>& other) const
+vec4<Type> vec4<Type>::operator-(const vec3<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -564,7 +668,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator-(const vec2<Type2>& other) const
+vec4<Type> vec4<Type>::operator-(const vec2<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -576,7 +680,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator-(const vec1<Type2>& other) const
+vec4<Type> vec4<Type>::operator-(const vec1<Type2>& other) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -588,7 +692,7 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 }
 
 template<typename Type> template<typename Type2>
-vec4<Type>& vec4<Type>::operator-(const Type2& val) const
+vec4<Type> vec4<Type>::operator-(const Type2& val) const
 requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
 {
     return {
@@ -596,6 +700,44 @@ requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
         this->y - val,
         this->z - val,
         this->w - val
+    };
+}
+
+// -- vector division
+
+template<typename Type> template<typename Type2>
+vec4<Type> vec4<Type>::operator/(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x / val,
+        this->y / val,
+        this->z / val,
+        this->w / val
+    };
+}
+
+// -- vector multiplication
+
+template<typename Type> template<typename Type2>
+double vec4<Type>::dot_mult(const vec4<Type2>& other) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return (double) this->x * other.x +
+           (double) this->y * other.y +
+           (double) this->z * other.z +
+           (double) this->w * other.w ;
+}
+
+template<typename Type> template<typename Type2>
+vec4<Type> vec4<Type>::operator*(const Type2& val) const
+requires std::is_arithmetic_v<Type> && std::is_arithmetic_v<Type2>
+{
+    return {
+        this->x * val,
+        this->y * val,
+        this->z * val,
+        this->w * val
     };
 }
 
