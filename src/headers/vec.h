@@ -88,9 +88,7 @@ struct vec2
 template <typename Type>
 struct vec3
 {
-    union {
-        struct{ Type x, y, z; };
-    };
+    Type x, y, z;
 
              vec3(const vec1<Type>& v, Type _y, Type _z) : x(v.x), y(_y),  z(_z)  {  }
              vec3(const vec2<Type>& v, Type _z)          : x(v.x), y(v.y), z(_z)  {  }
