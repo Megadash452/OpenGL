@@ -10,14 +10,21 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-vec1<Type>& vec1<Type>::normalized() const
+vec1<double> vec1<Type>::normalized() const
 requires std::is_arithmetic_v<Type>
 {
-    return { 1 };
+    return vec1<double>{ 1.0 };
 }
 
 template<typename Type>
-Type& vec1<Type>::operator[](unsigned int i) const
+Type& vec1<Type>::operator[](unsigned char i)
+{
+    if (i < 1)
+        return *(&this->x + i);
+    throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec1 only has 1 component"};
+}
+template<typename Type>
+Type vec1<Type>::operator[](unsigned char i) const
 {
     if (i < 1)
         return *(&this->x + i);
@@ -141,7 +148,7 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-vec2<Type>& vec2<Type>::normalized() const
+vec2<double> vec2<Type>::normalized() const
 requires std::is_arithmetic_v<Type>
 {
     double len = this->length();
@@ -152,7 +159,15 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-Type& vec2<Type>::operator[](unsigned int i) const
+Type& vec2<Type>::operator[](unsigned char i)
+{
+    if (i < 2)
+        return *(&this->x + i);
+    throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec2 only has 2 components"};
+}
+
+template<typename Type>
+Type vec2<Type>::operator[](unsigned char i) const
 {
     if (i < 2)
         return *(&this->x + i);
@@ -280,7 +295,7 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-vec3<Type>& vec3<Type>::normalized() const
+vec3<double> vec3<Type>::normalized() const
 requires std::is_arithmetic_v<Type>
 {
     double len = this->length();
@@ -292,7 +307,14 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-Type& vec3<Type>::operator[](unsigned int i) const
+Type& vec3<Type>::operator[](unsigned char i)
+{
+    if (i < 3)
+        return *(&this->x + i);
+    throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec3 only has 3 components"};
+}
+template<typename Type>
+Type vec3<Type>::operator[](unsigned char i) const
 {
     if (i < 3)
         return *(&this->x + i);
@@ -426,7 +448,7 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-vec4<Type>& vec4<Type>::normalized() const
+vec4<double> vec4<Type>::normalized() const
 requires std::is_arithmetic_v<Type>
 {
     double len = this->length();
@@ -439,7 +461,14 @@ requires std::is_arithmetic_v<Type>
 }
 
 template<typename Type>
-Type& vec4<Type>::operator[](unsigned int i) const
+Type& vec4<Type>::operator[](unsigned char i)
+{
+    if (i < 3)
+        return *(&this->x + i);
+    throw std::out_of_range{"STD::OUT_OF_RANGE Exception: vec4 only has 4 components"};
+}
+template<typename Type>
+Type vec4<Type>::operator[](unsigned char i) const
 {
     if (i < 3)
         return *(&this->x + i);
@@ -581,34 +610,34 @@ std::ostream& operator<<(std::ostream &os, const vec1<Type>& v)
     os << "{ " << v.x << " }";
     return os;
 }
-std::ostream& operator<<(std::ostream &os, const vec1<std::string>& v)
-{
-    os << "{ \"" << v.x << "\" }";
-    return os;
-}
-std::ostream& operator<<(std::ostream &os, const vec1<char>& v)
-{
-    os << "{ '" << v.x << "' }";
-    return os;
-}
+// std::ostream& operator<<(std::ostream &os, const vec1<char>& v)
+// {
+//     os << "{ '" << v.x << "' }";
+//     return os;
+// }
+// std::ostream& operator<<(std::ostream &os, const vec1<std::string>& v)
+// {
+//     os << "{ \"" << v.x << "\" }";
+//     return os;
+// }
 
 // -- vec2
 template<typename Type>
-std::ostream& operator<<(std::ostream &os, const vec2<Type>& v)
+std::ostream &operator<<(std::ostream &os, const vec2<Type> &v)
 {
     os << "{ " << v.x << ", " << v.y << " }";
     return os;
 }
-std::ostream& operator<<(std::ostream &os, const vec2<std::string>& v)
-{
-    os << "{ \"" << v.x << "\", \"" << v.y << "\" }";
-    return os;
-}
-std::ostream& operator<<(std::ostream &os, const vec2<char>& v)
-{
-    os << "{ '" << v.x << "', '" << v.y << "' }";
-    return os;
-}
+// std::ostream& operator<<(std::ostream &os, const vec2<char>& v)
+// {
+//     os << "{ '" << v.x << "', '" << v.y << "' }";
+//     return os;
+// }
+// std::ostream& operator<<(std::ostream &os, const vec2<std::string>& v)
+// {
+//     os << "{ \"" << v.x << "\", \"" << v.y << "\" }";
+//     return os;
+// }
 
 // -- vec3
 template<typename Type>
@@ -617,16 +646,16 @@ std::ostream& operator<<(std::ostream &os, const vec3<Type>& v)
     os << "{ " << v.x << ", " << v.y << ", " << v.z << " }";
     return os;
 }
-std::ostream& operator<<(std::ostream &os, const vec3<std::string>& v)
-{
-    os << "{ \"" << v.x << "\", \"" << v.y << "\", \"" << v.z << "\" }";
-    return os;
-}
-std::ostream& operator<<(std::ostream &os, const vec3<char>& v)
-{
-    os << "{ '" << v.x << "', '" << v.y << "', '" << v.z << "' }";
-    return os;
-}
+// std::ostream& operator<<(std::ostream &os, const vec3<char>& v)
+// {
+//     os << "{ '" << v.x << "', '" << v.y << "', '" << v.z << "' }";
+//     return os;
+// }
+// std::ostream& operator<<(std::ostream &os, const vec3<std::string>& v)
+// {
+//     os << "{ \"" << v.x << "\", \"" << v.y << "\", \"" << v.z << "\" }";
+//     return os;
+// }
 
 // -- vec4
 template<typename Type>
@@ -635,13 +664,13 @@ std::ostream& operator<<(std::ostream &os, const vec4<Type>& v)
     os << "{ " << v.x << ", " << v.y << ", " << v.z << ", " << v.w << " }";
     return os;
 }
-std::ostream& operator<<(std::ostream &os, const vec4<std::string>& v)
-{
-    os << "{ \"" << v.x << "\", \"" << v.y << "\", \"" << v.z << "\", \"" << v.w << "\" }";
-    return os;
-}
-std::ostream& operator<<(std::ostream &os, const vec4<char>& v)
-{
-    os << "{ '" << v.x << "', '" << v.y << "', '" << v.z << "', '" << v.w << "' }";
-    return os;
-}
+// std::ostream& operator<<(std::ostream &os, const vec4<char>& v)
+// {
+//     os << "{ '" << v.x << "', '" << v.y << "', '" << v.z << "', '" << v.w << "' }";
+//     return os;
+// }
+// std::ostream& operator<<(std::ostream &os, const vec4<std::string>& v)
+// {
+//     os << "{ \"" << v.x << "\", \"" << v.y << "\", \"" << v.z << "\", \"" << v.w << "\" }";
+//     return os;
+// }

@@ -99,8 +99,11 @@ int main() {
     //     }
     // };
 
-    vec2<int> v{1, 5};
-    std::cout << v.normalized();
+
+    std::cout << vec1<int>{48};
+    std::cout << vec2<int>{49, 50};
+    std::cout << vec3<int>{51, 52, 53};
+    std::cout << vec4<int>{54, 55, 56, 57};
 
     // -- set texture uniforms
     tex_shader.set_uniform("texture_data", 0);
