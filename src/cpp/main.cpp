@@ -100,10 +100,10 @@ int main() {
     // };
 
 
-    std::cout << vec1<int>{48};
-    std::cout << vec2<int>{49, 50};
-    std::cout << vec3<int>{51, 52, 53};
-    std::cout << vec4<int>{54, 55, 56, 57};
+    std::cout << vec1<char>{48};
+    std::cout << vec2<char>{49, 50};
+    std::cout << vec3<char>{51, 52, 53};
+    std::cout << vec4<char>{54, 55, 56, 57};
 
     // -- set texture uniforms
     tex_shader.set_uniform("texture_data", 0);

@@ -610,6 +610,7 @@ std::ostream& operator<<(std::ostream &os, const vec1<Type>& v)
     os << "{ " << v.x << " }";
     return os;
 }
+// TODO: (vec1) Fix Linker problem with template overload for print char, str
 // std::ostream& operator<<(std::ostream &os, const vec1<char>& v)
 // {
 //     os << "{ '" << v.x << "' }";
@@ -628,6 +629,7 @@ std::ostream &operator<<(std::ostream &os, const vec2<Type> &v)
     os << "{ " << v.x << ", " << v.y << " }";
     return os;
 }
+// TODO: (vec2) Fix Linker problem with template overload for print char, str
 // std::ostream& operator<<(std::ostream &os, const vec2<char>& v)
 // {
 //     os << "{ '" << v.x << "', '" << v.y << "' }";
@@ -646,6 +648,7 @@ std::ostream& operator<<(std::ostream &os, const vec3<Type>& v)
     os << "{ " << v.x << ", " << v.y << ", " << v.z << " }";
     return os;
 }
+// TODO: (vec3) Fix Linker problem with template overload for print char, str
 // std::ostream& operator<<(std::ostream &os, const vec3<char>& v)
 // {
 //     os << "{ '" << v.x << "', '" << v.y << "', '" << v.z << "' }";
@@ -664,6 +667,7 @@ std::ostream& operator<<(std::ostream &os, const vec4<Type>& v)
     os << "{ " << v.x << ", " << v.y << ", " << v.z << ", " << v.w << " }";
     return os;
 }
+// TODO: (vec4) Fix Linker problem with template overload for print char, str
 // std::ostream& operator<<(std::ostream &os, const vec4<char>& v)
 // {
 //     os << "{ '" << v.x << "', '" << v.y << "', '" << v.z << "', '" << v.w << "' }";

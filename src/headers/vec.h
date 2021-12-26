@@ -13,18 +13,19 @@ template<typename Type> struct vec2;
 template<typename Type> struct vec3;
 template<typename Type> struct vec4;
 
+// TODO: (func decl) See src/vec.tpp Line 613
 template<typename Type> std::ostream& operator<<(std::ostream&, const vec1<Type       >&);
-                        std::ostream& operator<<(std::ostream&, const vec1<char       >&);
-                        std::ostream& operator<<(std::ostream&, const vec1<std::string>&);
+                        // std::ostream& operator<<(std::ostream&, const vec1<char       >&);
+                        // std::ostream& operator<<(std::ostream&, const vec1<std::string>&);
 template<typename Type> std::ostream& operator<<(std::ostream&, const vec2<Type       >&);
-                        std::ostream& operator<<(std::ostream&, const vec2<char       >&);
-                        std::ostream& operator<<(std::ostream&, const vec2<std::string>&);
+                        // std::ostream& operator<<(std::ostream&, const vec2<char       >&);
+                        // std::ostream& operator<<(std::ostream&, const vec2<std::string>&);
 template<typename Type> std::ostream& operator<<(std::ostream&, const vec3<Type       >&);
-                        std::ostream& operator<<(std::ostream&, const vec3<char       >&);
-                        std::ostream& operator<<(std::ostream&, const vec3<std::string>&);
+                        // std::ostream& operator<<(std::ostream&, const vec3<char       >&);
+                        // std::ostream& operator<<(std::ostream&, const vec3<std::string>&);
 template<typename Type> std::ostream& operator<<(std::ostream&, const vec4<Type       >&);
-                        std::ostream& operator<<(std::ostream&, const vec4<char       >&);
-                        std::ostream& operator<<(std::ostream&, const vec4<std::string>&);
+                        // std::ostream& operator<<(std::ostream&, const vec4<char       >&);
+                        // std::ostream& operator<<(std::ostream&, const vec4<std::string>&);
 
 
 template <typename Type>
@@ -39,8 +40,9 @@ struct vec1
 
     //! @brief For printing a vec1 object
     friend std::ostream& operator<<<Type       >(std::ostream&, const vec1<Type       >&);
-    friend std::ostream& operator<<<char       >(std::ostream&, const vec1<char       >&);
-    friend std::ostream& operator<<<std::string>(std::ostream&, const vec1<std::string>&);
+    // TODO: (vec1) See src/vec.tpp Line 613
+    // friend std::ostream& operator<<<char       >(std::ostream&, const vec1<char       >&);
+    // friend std::ostream& operator<<<std::string>(std::ostream&, const vec1<std::string>&);
 
     //! @brief The Pythagoras Theorem. Only works when the Type stored is a number (char, int, float, etc..)
     [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
@@ -89,8 +91,9 @@ struct vec2
 
     //! @brief For printing a vec2 object
     friend std::ostream& operator<<<Type       >(std::ostream&, const vec2<Type       >&);
-    friend std::ostream& operator<<<char       >(std::ostream&, const vec2<char       >&);
-    friend std::ostream& operator<<<std::string>(std::ostream&, const vec2<std::string>&);
+    // TODO: (vec2) See src/vec.tpp Line 632
+    // friend std::ostream& operator<<<char       >(std::ostream&, const vec2<char       >&);
+    // friend std::ostream& operator<<<std::string>(std::ostream&, const vec2<std::string>&);
 
     // function only works when the Type stored is a number (char, int, float, etc..)
     [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
@@ -139,8 +142,9 @@ struct vec3
 
     //! @brief For printing a vec3 object
     friend std::ostream& operator<<<Type       >(std::ostream&, const vec3<Type       >&);
-    friend std::ostream& operator<<<char       >(std::ostream&, const vec3<char       >&);
-    friend std::ostream& operator<<<std::string>(std::ostream&, const vec3<std::string>&);
+    // TODO: (vec3) See src/vec.tpp Line 651
+    // friend std::ostream& operator<<<char       >(std::ostream&, const vec3<char       >&);
+    // friend std::ostream& operator<<<std::string>(std::ostream&, const vec3<std::string>&);
 
     // function only works when the Type stored is a number (char, int, float, etc..)
     [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
@@ -189,8 +193,9 @@ struct vec4
 
     //! @brief For printing a vec4 object
     friend std::ostream& operator<<<Type       >(std::ostream&, const vec4<Type       >&);
-    friend std::ostream& operator<<<char       >(std::ostream&, const vec4<char       >&);
-    friend std::ostream& operator<<<std::string>(std::ostream&, const vec4<std::string>&);
+    // TODO: (vec4) See src/vec.tpp Line 670
+    // friend std::ostream& operator<<<char       >(std::ostream&, const vec4<char       >&);
+    // friend std::ostream& operator<<<std::string>(std::ostream&, const vec4<std::string>&);
 
     // function only works when the Type stored is a number (char, int, float, etc..)
     [[nodiscard]] double length() const requires std::is_arithmetic_v<Type>;
