@@ -99,6 +99,8 @@ int main() {
     //     }
     // };
 
+    vec2<int> v{1, 5};
+    std::cout << v[2];
 
     // -- set texture uniforms
     tex_shader.set_uniform("texture_data", 0);

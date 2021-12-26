@@ -45,8 +45,7 @@ Texture::Texture(const char *filename)
     stbi_image_free(data);
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdangling-else"
+
 void Texture::set_wrap_mode(vec3<int> modes) const
 {
     this->bind();
@@ -72,7 +71,6 @@ void Texture::set_wrap_mode(vec3<int> modes) const
         else
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, modes.z);
 }
-#pragma clang diagnostic pop
 
 void Texture::set_filter_mode(vec2<int> modes) const
 {
