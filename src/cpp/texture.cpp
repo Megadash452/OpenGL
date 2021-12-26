@@ -5,14 +5,14 @@ Texture::Texture(const char *filename)
 {
     // generate texture id (ptr)
     glGenTextures(1, &this->gl_texture);
-    this->bind();
+    glBindTexture(GL_TEXTURE_2D, this->gl_texture);
 
     /// --- insert any filtering and wrapping settings. (see this->set_wrap_mode() and this->set_filter_mode())
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
     // use bilinear filtering with nearest mipmap level (?) when making image smaller
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     // use nearest neighbor filtering (without mipmap) when making image larger
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // Using mipmap with magnification has no effect
     // Using mipmap here will give GL_INVALID_ENUM error code          // because mipmap only creates images 2x smaller
@@ -22,13 +22,20 @@ Texture::Texture(const char *filename)
 
     if (data)
     {
+        // check if image uses RGB or RGBA
+        unsigned int img_read_mode = GL_RGB;
+        if (_num_col_channels == 3)
+            ; // already set to GL_RGB
+        else if (_num_col_channels == 4)
+            img_read_mode = GL_RGBA;
+
         /*! @brief Allocate and create image
          *  @param _2nd mipmap_level:    how many mipmaps to generate. no need for mipmap when everything is only 2D
          *  @param _3rd channels:        what channels to load the image onto the GPU with
          *  @param _6th legacy:          should always stay 0
          *  @param _7th source_channels: which channels was the original image loaded with (stb_image)
          *  @param _8th type:            the type of data the image is using (stb_image) */
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->_width, this->_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->_width, this->_height, 0, img_read_mode, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
@@ -38,6 +45,8 @@ Texture::Texture(const char *filename)
     stbi_image_free(data);
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdangling-else"
 void Texture::set_wrap_mode(vec3<int> modes) const
 {
     this->bind();
@@ -63,6 +72,7 @@ void Texture::set_wrap_mode(vec3<int> modes) const
         else
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, modes.z);
 }
+#pragma clang diagnostic pop
 
 void Texture::set_filter_mode(vec2<int> modes) const
 {

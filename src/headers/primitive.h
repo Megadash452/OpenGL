@@ -12,39 +12,14 @@ namespace primitive
     struct Shape2D
     {
     public:
-        std::array<float, v_size> vertices;
-
-        //! @brief Use the Vertex Array that holds a specified object/shape we want to render
-        void bind_array() const { glBindVertexArray(this->vertex_array); }
-
-        void draw() const
-        {
-            this->bind_array();
-
-            /*! @brief Render vertices
-             *  @param mode  type of primitive (shape) to render
-             *  @param first index of the vertex array where we want to take vertices from
-             *  @param count how many vertices to render */
-            // glDrawArrays(GL_TRIANGLES, 0, 3); // * USE FOR TRIANGLES
-
-            /*! @brief Render from indices (not vertices)
-             *  @param mode    type of primitive (shape) to render
-             *  @param count   how many vertices to render
-             *  @param type    data type of indices (e.g. Int, Float, etc.)
-             *  @param indices offset of indices to use from the Element Array */
-            glDrawElements(GL_TRIANGLES, 6, Unsigned_Int, nullptr); // * USE FOR MORE COMPLEX SHAPES
-        }
-
-        #pragma clang diagnostic push
-        #pragma ide diagnostic ignored "cppcoreguidelines-pro-type-member-init"
         /*! @brief Define a Shape (2 dimensional).
          *         Vertex attributes must follow this order: position(3), color(4), tex_coord(2)
-         *  @param _vertices the points of the shape
+         *  @param vertices the points of the shape
          *  @param vertex_length how many objects (a single data type) long is a vertex
          *      (e.g. vertex has point 1, 1, 0 and color 1, 1, 1, 1, so a single vertex is 7 (3+4) long
-         *  @param _indices */
-        explicit Shape2D(std::array<float, v_size> _vertices, unsigned int vertex_length, std::array<unsigned int, i_size> _indices)
-            : vertices(_vertices), indices(_indices)
+         *  @param indices Specify the order to draw vertices. Stores *indices* to a vertex array.
+         *  OpenGL draws triangles, the indices will be in order of a triangle (to draw a rectangle, draw 2 triangles)*/
+        Shape2D(std::array<float, v_size> vertices, unsigned int vertex_length, std::array<unsigned int, i_size> indices) // NOLINT(cppcoreguidelines-pro-type-member-init)
         {
             if (i_size == 0)
             {
@@ -71,11 +46,11 @@ namespace primitive
              *                  GL_STREAM_DRAW:  is written once,  is read few times
              *                  GL_STATIC_DRAW:  is written once,  is read a lot
              *                  GL_DYNAMIC_DRAW: is written a lot, is read a lot     */
-            glBufferData(GL_ARRAY_BUFFER, (unsigned int) sizeof(float) * this->vertices.size(),
-                         this->vertices.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, (unsigned int) sizeof(float) * vertices.size(),
+                         vertices.data(), GL_STATIC_DRAW);
             // We don't change the indices so safe to keep static
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (unsigned int) sizeof(unsigned int) * this->indices.size(),
-                         this->indices.data(),  GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (unsigned int) sizeof(unsigned int) * indices.size(),
+                         indices.data(),  GL_STATIC_DRAW);
 
             /*! @brief Create attribute object, attributes to be given to the vertex shader
              *  @param position   layout location (matches with the vertex shader)
@@ -88,19 +63,18 @@ namespace primitive
             // position attribute
             glVertexAttribPointer(0, 3, Float, False, int(vertex_length * sizeof(float)), nullptr);
             glEnableVertexAttribArray(0);
-
-            if (vertex_length > 3) // vertices contain color attribute (RGBA)
+            if (vertex_length > 3) // vertices have color attribute (RGBA)
             {
                 // use with shaders that take in the layout location = 1 attribute
-                // color attribute // <offset> start reading color after 3 floats (constitutes to x, y, z position)
-                glVertexAttribPointer(1, int(vertex_length - 3),    Float  , False,
-                                         int(vertex_length * sizeof(float)), (void*)(3 * sizeof(float))
+                // color attribute // <offset> start reading color after 3 floats (after x, y, z of position attribute)
+                glVertexAttribPointer(1, 4, Float, False, int(vertex_length * sizeof(float)),
+                                                          (void*)(3 * sizeof(float))
                 );  glEnableVertexAttribArray(1);
             }
-            if (vertex_length > 7) // vertices contain texture coordinates
+            if (vertex_length > 7) // vertices have texture coordinate attribute
             {
-                glVertexAttribPointer(2, int(vertex_length - 7),    Float  , False,
-                                         int(vertex_length * sizeof(float)), (void*)(7 * sizeof(float))
+                glVertexAttribPointer(2, 2,Float, False, int(vertex_length * sizeof(float)),
+                                                         (void*)(7 * sizeof(float))
                 );  glEnableVertexAttribArray(2);
             }
         }
@@ -114,16 +88,34 @@ namespace primitive
             glDeleteBuffers(1, &this->element_buffer);
         }
 
-    private:
-        /*! @brief Specify the order to draw vertices. Stores *indices* to a vertex. Used by Element Buffer
-         *  OpenGL uses triangles, the indices will be in order of a triangle (to draw a rectangle, draw 2 triangles) */
-        std::array<unsigned int, i_size> indices;
 
+        //! @brief Use the Vertex Array that holds a specified object/shape we want to render
+        void bind_array() const { glBindVertexArray(this->vertex_array); }
+
+        void draw() const
+        {
+            glBindVertexArray(this->vertex_array);
+
+            /*! @brief Render vertices
+             *  @param mode  type of primitive (shape) to render
+             *  @param first index of the vertex array where we want to take vertices from
+             *  @param count how many vertices to render */
+            // glDrawArrays(GL_TRIANGLES, 0, 3); // * USE FOR TRIANGLES
+
+            /*! @brief Render from indices (not vertices)
+             *  @param mode    type of primitive (shape) to render
+             *  @param count   how many vertices to render
+             *  @param type    data type of indices (e.g. Int, Float, etc.)
+             *  @param indices offset of indices to use from the Element Array */
+            glDrawElements(GL_TRIANGLES, 6, Unsigned_Int, nullptr); // * USE FOR MORE COMPLEX SHAPES
+        }
+
+    private:
         //! @brief An array of Vertex Buffer and Element Buffer pointers
         unsigned int vertex_array; // Calls BIND for Vertex and Element Buffers when it is bound
         //! @brief A pointer to some data in the GPU. Contains an array of vertices
         unsigned int vertex_buffer;
-        //! @brief Specifies the order in which to use vertices in the Vertex Buffer
+        //! @brief Stores indices that specify the order in which to draw vertices in the Vertex Buffer
         unsigned int element_buffer;
     };
 

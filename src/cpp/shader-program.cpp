@@ -18,11 +18,11 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
        vert_shader_src = read_file(vert_shader_path);
 
     // compile vertex shader
-    const char* vs = vert_shader_src.c_str(); // needs to be l-value
-    unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vs, nullptr);
-    glCompileShader(vertex_shader);
-    checkShaderCompileErrors(vertex_shader, "FRAGMENT"); // check for errors when compiling shader
+    const char* vs_code = vert_shader_src.c_str(); // needs to be l-value
+    unsigned int vert_shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vert_shader, 1, &vs_code, nullptr);
+    glCompileShader(vert_shader);
+    checkShaderCompileErrors(vert_shader, "VERTEX"); // check for errors when compiling shader
 
 
 
@@ -40,23 +40,23 @@ ShaderProgram::ShaderProgram(const char* vert_shader_path, const char* frag_shad
 
     // compile fragment shader
     const char* fs = frag_shader_src.c_str();
-    unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fs, nullptr);
-    glCompileShader(fragment_shader);
-    checkShaderCompileErrors(fragment_shader, "FRAGMENT"); // check for errors when compiling shader
+    unsigned int frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(frag_shader, 1, &fs, nullptr);
+    glCompileShader(frag_shader);
+    checkShaderCompileErrors(frag_shader, "FRAGMENT"); // check for errors when compiling shader
 
 
 
     // --- SHADER PROGRAM ---
     this->gl_program = glCreateProgram();
-    glAttachShader(this->gl_program, vertex_shader);
-    glAttachShader(this->gl_program, fragment_shader);
+    glAttachShader(this->gl_program, vert_shader);
+    glAttachShader(this->gl_program, frag_shader);
     glLinkProgram(this->gl_program);
     checkProgramCompileErrors(); // check for errors when attaching shaders
 
     // these are already compiled and used by this->program, so they have no use now
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    glDeleteShader(vert_shader);
+    glDeleteShader(frag_shader);
 }
 
 void ShaderProgram::use()  const { glUseProgram(this->gl_program); }

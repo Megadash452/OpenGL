@@ -14,7 +14,7 @@ using std::string;
 #define Resource_Path "../../res"
 
 
-int mainvf() {
+int main() {
     // initialize GLFW
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // version 3.x
@@ -33,34 +33,36 @@ int mainvf() {
         return 1;
     }
     glfwMakeContextCurrent(window);
+    // set minimum size to 200x200. max size is any
+    glfwSetWindowSizeLimits(window, Win_Min_Width, Win_Min_Height, Any, Any);
+    // register events
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height){
+        // the space OpenGL will work with relative to the window
+        glViewport(0, 0, width, height);
+    });
+    // flip textures on the y-axis when loading them
+    stbi_set_flip_vertically_on_load(true);
 
     // initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
-        return 1;
+        return -1;
     }
 
-    // set minimum size to 200x200. max size is any
-    glfwSetWindowSizeLimits(window, Win_Min_Width, Win_Min_Height, Any, Any);
-    // the space OpenGL will work with relative to the window
-    glViewport(0, 0, Win_Width, Win_Height);
-    // register events
-    glfwSetFramebufferSizeCallback(window, onWindowResize);
 
 
     // --- Define Shapes (work like masks)---
-    ShaderProgram basic_shader{  };
-    primitive::Rectangle rectangle{ vec2<float>{-1, 0.5}, vec2<float>{1, 1} };
+    //ShaderProgram basic_shader{  };
+    //primitive::Rectangle rectangle{ vec2<float>{-1, 0.5}, vec2<float>{1, 1} };
 
     ShaderProgram tex_shader{
         Shaders_Path"/texture.vert.glsl",
         Shaders_Path"/texture.frag.glsl"
     };
-    stbi_set_flip_vertically_on_load(true); // flip textures on the y-axis when loading them
     Texture heart_tex{ Resource_Path"/heart.png" };
     primitive::Shape2D tex_rectangle{
-        std::array<float, 4*3 + 4*4 + 4*2> {
+        std::array<float, 3*4 + 4*4 + 2*4> {
            //position //color       // tex_coord
             0, 1, 0,   0, 1, 0, 1,   0, 1, //    top left
             0, 0, 0,   1, 0, 0, 1,   0, 0, // bottom left
@@ -122,12 +124,12 @@ int mainvf() {
         // clear previous frame
         glClear(GL_COLOR_BUFFER_BIT);
 
-        basic_shader.use();
-        rectangle.draw();
+        // basic_shader.use();
+        // rectangle.draw();
         //
-        tex_shader.use();
         glActiveTexture(GL_TEXTURE0); // texture unit
         heart_tex.use();
+        tex_shader.use();
         // TODO: app crashes when drawing with texture shader when frag uses the color input (exit code -1073741819 (0xC0000005))
         tex_rectangle.draw();
         //

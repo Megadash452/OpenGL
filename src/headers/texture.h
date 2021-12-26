@@ -8,6 +8,8 @@ public:
     unsigned int gl_texture{};
     vec4<float> border_col;
 
+    explicit Texture(const char* filename);
+
     [[nodiscard]] int width() const { return _width; }
     [[nodiscard]] int height() const { return _height; }
     //! @brief number of color channels
@@ -38,8 +40,6 @@ public:
     void use() const;
     //! @brief alias to this->use()
     void bind() const;
-
-    explicit Texture(const char* filename);
 
 private:
     int _width{};
